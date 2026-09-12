@@ -1,40 +1,35 @@
 class Solution {
 public:
+
     vector<int> singleNumber(vector<int>& nums) {
 
-        vector<int> a;
-
-        unordered_map<int,int>m;
-
-        stack<int> s;
-
+        int ans = 0;
+        vector<int> sol;
+        
         for(int i =0; i<nums.size(); i++) {
+            ans ^= nums[i];
+        }
+        
+        int idx = 0;
 
-            m[nums[i]]++;
+        while(((ans >> idx) & 1 ) == 0 ) {
+            idx ++;
+        }
 
-            if (m[nums[i]] == 1) {
-                s.push(nums[i]);
+        int x = 0;
+        int y = 0;
+
+        for(int i = 0; i<nums.size(); i++) {
+            if(((nums[i] >> idx) & 1) == 1) {
+                x ^= nums[i];
+            } else {
+                y ^= nums[i];
             }
         }
 
-        bool ok = true;
+        sol.push_back(x);
+        sol.push_back(y);
 
-        while(!s.empty()) {
-
-            if(ok == false && m[s.top()] == 1) {
-                a.push_back(s.top());
-                break;
-            }
-
-             if(m[s.top()] == 1) {
-                ok = false;
-                a.push_back(s.top());
-            }
-
-            s.pop();
-
-        }
-
-        return a;
+        return sol;
     }
 };
